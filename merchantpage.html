@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cebu Artisan Co. - PiliLokal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-lora { font-family: 'Lora', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .bg-pili-brown { background-color: #8B5C41; }
+        .text-pili-brown { color: #8B5C41; }
+        .border-pili-brown { border-color: #8B5C41; }
+        
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #f3f4f6;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(139, 92, 65, 0.12);
+        }
+
+        .add-to-cart-btn {
+            background: #8B5C41;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #6d4731;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: #8B5C41;
+            border-bottom-color: #8B5C41;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .gallery-image {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .gallery-image:hover {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 font-inter">
+    
+    <!-- Top Bar -->
+    <div class="bg-pili-brown text-white text-center py-2 text-xs sm:text-sm px-4">
+        🇵🇭 SUPPORTING 500+ FILIPINO ARTISANS | FREE SHIPPING ON ORDERS $50+
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="sticky top-0 bg-white/98 backdrop-blur-md z-50 border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-20">
+                <div class="flex items-center">
+                    <a href="home.html" class="flex items-center group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-pili-brown rounded-full flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105">
+                            <span class="text-white font-bold text-lg sm:text-xl font-lora">P</span>
+                        </div>
+                        <span class="text-xl sm:text-2xl font-lora font-semibold text-pili-brown tracking-tight">PiliLokal</span>
+                    </a>
+                </div>
+                
+                 <div class="hidden lg:flex items-center space-x-8">
+                        <a href="merchants.html" class="text-stone-700 hover:text-pili-brown font-medium transition">Our Merchants</a>
+                        <a href="shop.html" class="text-stone-700 hover:text-pili-brown font-medium transition">Shop</a>
+                        <a href="#featured" class="text-stone-700 hover:text-pili-brown font-medium transition">Featured</a>
+                        <a href="#story" class="text-stone-700 hover:text-pili-brown font-medium transition">Our Story</a>
+                        <a href="#contact" class="text-stone-700 hover:text-pili-brown font-medium transition">Contact</a>
+                        <a href="shop.html" class="bg-pili-brown text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-opacity-90 transition-all">
+                            Shop Now
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center space-x-2 text-sm text-stone-600">
+                <a href="/" class="hover:text-pili-brown">Home</a>
+                <span>›</span>
+                <a href="/merchants" class="hover:text-pili-brown">Merchants</a>
+                <span>›</span>
+                <span class="text-stone-900 font-medium">Cebu Artisan Co.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Merchant Header -->
+    <section class="py-12 bg-gradient-to-br from-amber-50 to-orange-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl p-16 flex items-center justify-center">
+                        <div class="text-9xl">🏺</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="bg-pili-brown text-white px-3 py-1 rounded-full text-sm font-semibold">Featured Merchant</span>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Verified</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-stone-900 mb-4 font-lora">
+                        Cebu Artisan Co.
+                    </h1>
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="flex items-center">
+                            <span class="text-yellow-500 text-xl">⭐⭐⭐⭐⭐</span>
+                            <span class="ml-2 text-stone-600 font-medium">4.9 (324 reviews)</span>
+                        </div>
+                        <span class="text-stone-400">•</span>
+                        <span class="text-stone-600">📍 Cebu City, Philippines</span>
+                    </div>
+                    <p class="text-lg text-stone-700 mb-6 leading-relaxed">
+                        Cebu Artisan Co. specializes in handcrafted pottery and ceramics, preserving traditional Filipino techniques passed down through generations. Each piece tells a story of heritage, skill, and passion.
+                    </p>
+                    <div class="grid grid-cols-3 gap-4 mb-8">
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-pili-brown mb-1">120+</div>
+                            <div class="text-sm text-stone-600">Products</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-pili-brown mb-1">15+</div>
+                            <div class="text-sm text-stone-600">Years</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-pili-brown mb-1">50+</div>
+                            <div class="text-sm text-stone-600">Artisans</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button class="bg-pili-brown text-white px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all">
+                            Follow Merchant
+                        </button>
+                        <button class="border-2 border-pili-brown text-pili-brown px-8 py-3 rounded-lg font-semibold hover:bg-pili-brown hover:text-white transition-all">
+                            Contact
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs Section -->
+    <section class="bg-white border-b border-stone-200 sticky top-20 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8 overflow-x-auto">
+                <button class="tab-btn active" data-tab="products">Products</button>
+                <button class="tab-btn" data-tab="about">About</button>
+                <button class="tab-btn" data-tab="reviews">Reviews</button>
+                <button class="tab-btn" data-tab="gallery">Gallery</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Tab -->
+    <section id="products-tab" class="tab-content active py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-stone-900 font-lora">Featured Products</h2>
+                <select class="px-4 py-2 rounded-lg border border-stone-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-pili-brown">
+                    <option>Sort by: Featured</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest</option>
+                    <option>Best Selling</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="aspect-square bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center p-6">
+                        <div class="text-5xl">🏺</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-stone-900 mb-2">Handmade Clay Vase</h3>
+                        <p class="text-sm text-stone-600 mb-3">Traditional design with modern appeal</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-pili-brown">$42.99</span>
+                            <span class="text-yellow-500 text-sm">⭐ 4.9</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="aspect-square bg-gradient-to-br from-stone-50 to-neutral-50 flex items-center justify-center p-6">
+                        <div class="text-5xl">🍵</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-stone-900 mb-2">Ceramic Tea Set</h3>
+                        <p class="text-sm text-stone-600 mb-3">Set of 6 cups with teapot</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-pili-brown">$68.50</span>
+                            <span class="text-yellow-500 text-sm">⭐ 5.0</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="aspect-square bg-gradient-to-br from-yellow-50 to-amber-50 flex items-center justify-center p-6">
+                        <div class="text-5xl">🍽️</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-stone-900 mb-2">Dinner Plate Set</h3>
+                        <p class="text-sm text-stone-600 mb-3">Hand-painted ceramic plates (4pc)</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-pili-brown">$55.00</span>
+                            <span class="text-yellow-500 text-sm">⭐ 4.8</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="aspect-square bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center p-6">
+                        <div class="text-5xl">💐</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-stone-900 mb-2">Decorative Bowl</h3>
+                        <p class="text-sm text-stone-600 mb-3">Perfect for fruits or display</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-pili-brown">$38.99</span>
+                            <span class="text-yellow-500 text-sm">⭐ 4.9</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="aspect-square bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center p-6">
+                        <div class="text-5xl">🕯️</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-stone-900 mb-2">Candle Holder</h3>
+                        <p class="text-sm text-stone-600 mb-3">Set of 3 rustic holders</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-pili-brown">$29.99</span>
+                            <span class="text-yellow-500 text-sm">⭐ 4.7</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="aspect-square bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-6">
+                        <div class="text-5xl">🌿</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-stone-900 mb-2">Planter Pot</h3>
+                        <p class="text-sm text-stone-600 mb-3">Medium size with drainage</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-pili-brown">$32.50</span>
+                            <span class="text-yellow-500 text-sm">⭐ 5.0</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card">
+                    <div class="aspect-square bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center p-6">
+                        <div class="text-5xl">☕</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-stone-900 mb-2">Coffee Mug Set</h3>
+                        <p class="text-sm text-stone-600 mb-3">Artisan mugs, set of 4</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-pili-brown">$45.00</span>
+                            <span class="text-yellow-500 text-sm">⭐ 4.9</span>
+                        </div>
+                        <button class="add-to-cart-btn w-full">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card">
+                    <div class="aspect-square bg-gradient-to-br from-red-50 to-rose-50 flex items-center justify-center p-6">
+                        <div class="text-5xl">🎨</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-stone-900 mb-2">Wall Art Tile</h3>
+                        <p class="text-sm text-stone-600 mb-3">Hand-painted decorative tile</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-pili-brown">$52.00</span>
+                            <span class="text-yellow-500 text-sm">⭐ 4.8</span>
+                            </div>
+                        <button class="add-to-cart-btn w-full">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+                
+
+
+
+    <section id="about-tab" class="tab-content py-12">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-stone-900 mb-6 font-lora">Our Story</h2>
+            <div class="prose prose-stone lg:prose-lg text-stone-700 space-y-4">
+                <p>Founded in 2008, Cebu Artisan Co. began as a small family workshop in the heart of Cebu. Our mission is to bridge the gap between ancient pottery traditions and modern Filipino homes.</p>
+                <p>Every piece you see is thrown on a wheel by a master artisan, fired in high-temperature kilns, and hand-glazed using eco-friendly materials sourced locally from the Visayas region.</p>
+                <div class="bg-amber-50 p-6 rounded-xl border-l-4 border-pili-brown my-8">
+                    <p class="italic text-stone-800">"We don't just make pots; we mold the earth of our ancestors into the heritage of our children."</p>
+                    <p class="font-bold mt-2">— Maria Clara, Lead Artisan</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews-tab" class="tab-content py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-stone-900 mb-8 font-lora">Customer Reviews</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-pili-brown rounded-full flex items-center justify-center text-white font-bold mr-3">D</div>
+                            <div>
+                                <p class="font-semibold">David Santos</p>
+                                <p class="text-xs text-stone-500">Verified Buyer</p>
+                            </div>
+                        </div>
+                        <span class="text-yellow-500 text-sm">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="text-stone-700">The quality is exceptional. You can feel the texture of the clay and the effort put into the glaze. Fast shipping to Manila too!</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-stone-300 rounded-full flex items-center justify-center text-white font-bold mr-3">A</div>
+                            <div>
+                                <p class="font-semibold">Ana Reyes</p>
+                                <p class="text-xs text-stone-500">Verified Buyer</p>
+                            </div>
+                        </div>
+                        <span class="text-yellow-500 text-sm">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="text-stone-700">Absolutely beautiful tea set. It has become the centerpiece of my dining room. Proudly Filipino-made!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery-tab" class="tab-content py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <img src="https://images.unsplash.com/photo-1565191999001-551c187427bb?auto=format&fit=crop&q=80" class="rounded-xl aspect-square object-cover" alt="Workshop">
+                <img src="https://images.unsplash.com/photo-1525498128493-380d1990a112?auto=format&fit=crop&q=80" class="rounded-xl aspect-square object-cover" alt="Workshop">
+                <img src="https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&q=80" class="rounded-xl aspect-square object-cover" alt="Workshop">
+                <img src="https://images.unsplash.com/photo-1493106641515-8134760443f1?auto=format&fit=crop&q=80" class="rounded-xl aspect-square object-cover" alt="Workshop">
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-stone-900 text-stone-300 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center mb-6">
+                        <div class="w-8 h-8 bg-pili-brown rounded-full flex items-center justify-center mr-2">
+                            <span class="text-white font-bold font-lora">P</span>
+                        </div>
+                        <span class="text-xl font-lora font-semibold text-white">PiliLokal</span>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6">Connecting the world to the finest Filipino craftsmanship. Every purchase supports local artisan communities.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-pili-brown transition">FB</a>
+                        <a href="#" class="hover:text-pili-brown transition">IG</a>
+                        <a href="#" class="hover:text-pili-brown transition">TW</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Shop</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="#" class="hover:text-white transition">New Arrivals</a></li>
+                        <li><a href="#" class="hover:text-white transition">Best Sellers</a></li>
+                        <li><a href="#" class="hover:text-white transition">Home Decor</a></li>
+                        <li><a href="#" class="hover:text-white transition">Kitchenware</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Support</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="#" class="hover:text-white transition">Shipping Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Returns & Exchanges</a></li>
+                        <li><a href="#" class="hover:text-white transition">FAQs</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Newsletter</h4>
+                    <p class="text-sm mb-4">Join our community and get 10% off your first order.</p>
+                    <form class="flex gap-2">
+                        <input type="email" placeholder="Email address" class="bg-stone-800 border-none rounded-lg px-4 py-2 text-sm w-full focus:ring-2 focus:ring-pili-brown">
+                        <button class="bg-pili-brown text-white px-4 py-2 rounded-lg text-sm font-semibold">Join</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-stone-800 pt-8 text-sm text-center">
+                <p>&copy; 2024 PiliLokal. All rights reserved. Crafted with 🤎 in the Philippines.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+                
+                // Update active button
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Show relevant content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+                
+                // Optional: Scroll to top of tab content for better UX
+                const tabSection = document.querySelector('.sticky');
+                window.scrollTo({
+                    top: tabSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

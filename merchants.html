@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Merchants - PiliLokal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-lora { font-family: 'Lora', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .bg-pili-brown { background-color: #8B5C41; }
+        .text-pili-brown { color: #8B5C41; }
+        .border-pili-brown { border-color: #8B5C41; }
+        
+        .merchant-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #f3f4f6;
+        }
+        
+        .merchant-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+        }
+        
+        .category-pill {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #f5f5f4;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #57534e;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .category-pill:hover, .category-pill.active {
+            background: #8B5C41;
+            color: white;
+        }
+
+        .filter-btn {
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #8B5C41;
+            color: white;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 font-inter">
+    
+    <!-- Top Bar -->
+    <div class="bg-pili-brown text-white text-center py-2 text-xs sm:text-sm px-4">
+        🇵🇭 SUPPORTING 500+ FILIPINO ARTISANS | FREE SHIPPING ON ORDERS $50+
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="sticky top-0 bg-white/98 backdrop-blur-md z-50 border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-pili-brown rounded-full flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105">
+                            <span class="text-white font-bold text-lg sm:text-xl font-lora">P</span>
+                        </div>
+                        <span class="text-xl sm:text-2xl font-lora font-semibold text-pili-brown tracking-tight">PiliLokal</span>
+                    </a>
+                </div>
+                
+                 <div class="hidden lg:flex items-center space-x-8">
+                        <a href="merchants.html" class="text-stone-700 hover:text-pili-brown font-medium transition">Our Merchants</a>
+                        <a href="shop.html" class="text-stone-700 hover:text-pili-brown font-medium transition">Shop</a>
+                        <a href="#featured" class="text-stone-700 hover:text-pili-brown font-medium transition">Featured</a>
+                        <a href="#story" class="text-stone-700 hover:text-pili-brown font-medium transition">Our Story</a>
+                        <a href="#contact" class="text-stone-700 hover:text-pili-brown font-medium transition">Contact</a>
+                        <a href="shop.html" class="bg-pili-brown text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-opacity-90 transition-all">
+                            Shop Now
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-12 pb-8 bg-gradient-to-br from-amber-50 to-orange-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-stone-900 mb-4 font-lora">
+                Meet Our <span class="text-pili-brown">Merchants</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-stone-600 max-w-3xl mx-auto mb-8">
+                Every merchant on PiliLokal represents authentic Filipino craftsmanship, tradition, and innovation. Support their stories, one purchase at a time.
+            </p>
+            <div class="inline-flex items-center space-x-2 bg-white px-4 py-2 rounded-full shadow-sm">
+                <span class="text-2xl">🇵🇭</span>
+                <span class="text-sm font-semibold text-pili-brown">500+ Verified Filipino Merchants</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="py-8 bg-white border-b border-stone-200 sticky top-20 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex items-center space-x-4 overflow-x-auto pb-2 sm:pb-0">
+                    <button class="filter-btn active px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap bg-pili-brown text-white" data-category="all">
+                        All Merchants
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap bg-stone-100 text-stone-700" data-category="food">
+                        Food & Beverage
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap bg-stone-100 text-stone-700" data-category="crafts">
+                        Crafts & Artisan
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap bg-stone-100 text-stone-700" data-category="fashion">
+                        Fashion & Beauty
+                    </button>
+                    <button class="filter-btn px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap bg-stone-100 text-stone-700" data-category="home">
+                        Home & Living
+                    </button>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm text-stone-600 whitespace-nowrap">Sort by:</span>
+                    <select class="px-4 py-2 rounded-lg border border-stone-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-pili-brown">
+                        <option>Featured</option>
+                        <option>Newest</option>
+                        <option>Most Popular</option>
+                        <option>A-Z</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Merchants Grid -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="merchants-grid">
+                
+                <!-- Merchant 1 -->
+                <a href="merchantpage.html" class="merchant-card block group" data-category="crafts">
+                    <div class="h-56 bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center relative rounded-t-xl overflow-hidden">
+                        <div class="text-7xl transition-transform duration-300 group-hover:scale-110">🏺</div>
+                        
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-pili-brown shadow-sm">
+                            Featured
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Cebu Artisan Co.</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.9</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Handcrafted pottery and ceramics from skilled artisans in Cebu, preserving traditional techniques passed down through generations.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Pottery</span>
+                            <span class="category-pill">Home Decor</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Cebu City</span>
+                            <span class="text-pili-brown font-semibold">120+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 2 -->
+                <a href="/merchants/laguna-naturals" class="merchant-card" data-category="fashion">
+                    <div class="h-56 bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center relative">
+                        <div class="text-7xl">🌿</div>
+                        <div class="absolute top-4 right-4 bg-green-100 px-3 py-1 rounded-full text-xs font-semibold text-green-800">
+                            Bestseller
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Laguna Naturals</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 5.0</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Organic skincare and wellness products made from locally-sourced Filipino ingredients. Cruelty-free and sustainable.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Skincare</span>
+                            <span class="category-pill">Organic</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Laguna</span>
+                            <span class="text-pili-brown font-semibold">85+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 3 -->
+                <a href="/merchants/mindanao-chocolates" class="merchant-card" data-category="food">
+                    <div class="h-56 bg-gradient-to-br from-yellow-100 to-amber-100 flex items-center justify-center">
+                        <div class="text-7xl">🍫</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Mindanao Chocolates</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.8</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Premium single-origin chocolate crafted from cacao grown in the rich soil of Davao, supporting local farmers.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Food</span>
+                            <span class="category-pill">Premium</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Davao City</span>
+                            <span class="text-pili-brown font-semibold">45+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 4 -->
+                <a href="/merchants/manila-fashion-house" class="merchant-card" data-category="fashion">
+                    <div class="h-56 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+                        <div class="text-7xl">👕</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Manila Fashion House</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.9</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Contemporary Filipino fashion that blends traditional textiles with modern design. Ethically made in Metro Manila.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Fashion</span>
+                            <span class="category-pill">Clothing</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Manila</span>
+                            <span class="text-pili-brown font-semibold">200+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 5 -->
+                <a href="/merchants/cordillera-weavers" class="merchant-card" data-category="crafts">
+                    <div class="h-56 bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center relative">
+                        <div class="text-7xl">🧺</div>
+                        <div class="absolute top-4 right-4 bg-blue-100 px-3 py-1 rounded-full text-xs font-semibold text-blue-800">
+                            Indigenous
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Cordillera Weavers</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 5.0</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Authentic handwoven baskets, bags, and textiles from indigenous communities in the Cordillera mountains.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Woven Goods</span>
+                            <span class="category-pill">Indigenous</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Baguio</span>
+                            <span class="text-pili-brown font-semibold">95+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 6 -->
+                <a href="/merchants/batangas-honey-farm" class="merchant-card" data-category="food">
+                    <div class="h-56 bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center">
+                        <div class="text-7xl">🍯</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Batangas Honey Farm</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.9</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Pure, raw honey and bee products from sustainably managed apiaries in Batangas. No additives, just nature.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Food</span>
+                            <span class="category-pill">Organic</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Batangas</span>
+                            <span class="text-pili-brown font-semibold">30+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 7 -->
+                <a href="/merchants/iloilo-textiles" class="merchant-card" data-category="fashion">
+                    <div class="h-56 bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+                        <div class="text-7xl">🧵</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Iloilo Textiles</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.7</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Traditional hablon and piña textiles woven using ancestral techniques, supporting local weavers in Iloilo.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Textiles</span>
+                            <span class="category-pill">Traditional</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Iloilo City</span>
+                            <span class="text-pili-brown font-semibold">65+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 8 -->
+                <a href="/merchants/palawan-pearls" class="merchant-card" data-category="fashion">
+                    <div class="h-56 bg-gradient-to-br from-teal-100 to-cyan-100 flex items-center justify-center relative">
+                        <div class="text-7xl">💎</div>
+                        <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-semibold text-pili-brown">
+                            Luxury
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Palawan Pearls</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 5.0</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Exquisite pearl jewelry sourced from sustainable pearl farms in Palawan's pristine waters.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Jewelry</span>
+                            <span class="category-pill">Luxury</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Puerto Princesa</span>
+                            <span class="text-pili-brown font-semibold">50+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 9 -->
+                <a href="/merchants/bicol-spices" class="merchant-card" data-category="food">
+                    <div class="h-56 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
+                        <div class="text-7xl">🌶️</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Bicol Spices</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.8</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Authentic Bicolano spices, sauces, and condiments that bring the heat and flavor of Bicol to your kitchen.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Food</span>
+                            <span class="category-pill">Spices</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Legazpi</span>
+                            <span class="text-pili-brown font-semibold">55+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 10 -->
+                <a href="/merchants/bohol-bamboo-crafts" class="merchant-card" data-category="home">
+                    <div class="h-56 bg-gradient-to-br from-lime-100 to-green-100 flex items-center justify-center">
+                        <div class="text-7xl">🎋</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Bohol Bamboo Crafts</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.9</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Sustainable bamboo furniture and home accessories crafted by skilled artisans in Bohol.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Home Decor</span>
+                            <span class="category-pill">Sustainable</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Tagbilaran</span>
+                            <span class="text-pili-brown font-semibold">75+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 11 -->
+                <a href="/merchants/manila-coffee-roasters" class="merchant-card" data-category="food">
+                    <div class="h-56 bg-gradient-to-br from-amber-100 to-yellow-100 flex items-center justify-center">
+                        <div class="text-7xl">☕</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Manila Coffee Roasters</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.9</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Artisan-roasted Philippine coffee beans from Benguet, Sagada, and other coffee-growing regions.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Coffee</span>
+                            <span class="category-pill">Artisan</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Quezon City</span>
+                            <span class="text-pili-brown font-semibold">40+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Merchant 12 -->
+                <a href="/merchants/zamboanga-seashell-art" class="merchant-card" data-category="home">
+                    <div class="h-56 bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center">
+                        <div class="text-7xl">🐚</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-stone-900">Zamboanga Seashell Art</h3>
+                            <span class="text-yellow-500 text-sm">⭐ 4.7</span>
+                        </div>
+                        <p class="text-sm text-stone-600 mb-4">Beautiful decorative pieces and jewelry made from sustainably collected seashells from Zamboanga's shores.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="category-pill">Art</span>
+                            <span class="category-pill">Coastal</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-stone-500">📍 Zamboanga</span>
+                            <span class="text-pili-brown font-semibold">60+ Products</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-pili-brown">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 font-lora">
+                Become a PiliLokal Merchant
+            </h2>
+            <p class="text-lg text-white/90 mb-8">
+                Are you a Filipino artisan or business owner? Join our community and reach customers worldwide.
+            </p>
+            <a href="/merchants/apply" class="inline-block bg-white text-pili-brown px-8 py-4 rounded-lg font-semibold hover:bg-stone-100 transition-all">
+                Apply to Become a Merchant
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-pili-brown rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-xl font-lora">P</span>
+                        </div>
+                        <span class="text-xl font-lora font-semibold">PiliLokal</span>
+                    </div>
+                    <p class="text-sm text-stone-400">
+                        Connecting Filipino artisans with the world.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Shop</h4>
+                    <ul class="space-y-2 text-sm text-stone-400">
+                        <li><a href="/collections/all" class="hover:text-white transition">All Products</a></li>
+                        <li><a href="/merchants" class="hover:text-white transition">Our Merchants</a></li>
+                        <li><a href="/collections/featured" class="hover:text-white transition">Featured</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-stone-400">
+                        <li><a href="/about" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="/merchants/apply" class="hover:text-white transition">Become a Merchant</a></li>
+                        <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-stone-400">
+                        <li><a href="/faq" class="hover:text-white transition">FAQ</a></li>
+                        <li><a href="/shipping" class="hover:text-white transition">Shipping Info</a></li>
+                        <li><a href="/privacy" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-stone-800 pt-8 text-center text-sm text-stone-400">
+                <p>&copy; 2025 PiliLokal. Made with ❤️ in the Philippines</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const merchantCards = document.querySelectorAll('.merchant-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active', 'bg-pili-brown', 'text-white'));
+                filterBtns.forEach(b => b.classList.add('bg-stone-100', 'text-stone-700'));
+                btn.classList.remove('bg-stone-100', 'text-stone-700');
+                btn.classList.add('active', 'bg-pili-brown', 'text-white');
+
+                const category = btn.dataset.category;
+
+                // Filter merchants
+                merchantCards.forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
