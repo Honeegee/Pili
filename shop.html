@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - PiliLokal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-lora { font-family: 'Lora', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .bg-pili-brown { background-color: #8B5C41; }
+        .text-pili-brown { color: #8B5C41; }
+        .border-pili-brown { border-color: #8B5C41; }
+        .bg-pili-tan { background-color: #C58F62; }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Category sidebar styles */
+        .category-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #57534e;
+            position: relative;
+        }
+
+        .category-item:hover {
+            background-color: #fef3e2;
+            color: #8B5C41;
+            transform: translateX(4px);
+        }
+
+        .category-item.active {
+            background-color: #8B5C41;
+            color: white;
+        }
+
+        .category-item.active:hover {
+            background-color: #6d4731;
+        }
+
+        .food-category {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expand-icon {
+            font-size: 10px;
+            transition: transform 0.2s ease;
+            color: #78716c;
+        }
+
+        .food-category.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .food-category:hover .expand-icon {
+            color: #8B5C41;
+        }
+
+        .food-category.active .expand-icon {
+            color: white;
+        }
+
+        .subcategories-container {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        /* Product card styles */
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #f3f4f6;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(139, 92, 65, 0.12);
+        }
+
+        .product-image {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #fef3e2 0%, #f5e6d3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(139, 92, 65, 0.08) 0%, transparent 60%);
+        }
+
+        .add-to-cart-btn {
+            background: #8B5C41;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #6d4731;
+            transform: scale(1.02);
+        }
+
+        /* Filter badge styles */
+        .filter-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #8B5C41;
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .filter-badge button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        /* Mobile category dropdown */
+        .mobile-category-dropdown {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-category-dropdown {
+                display: block;
+            }
+            
+            .desktop-category-sidebar {
+                display: none;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .mobile-category-dropdown {
+                display: none;
+            }
+        }
+
+        /* Subcategory styles */
+        .subcategory-item {
+            padding: 8px 16px 8px 32px;
+            font-size: 13px;
+            color: #57534e;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .subcategory-item:hover {
+            background-color: #fafaf9;
+            color: #8B5C41;
+        }
+
+        .subcategory-item.active {
+            background-color: #fef3e2;
+            color: #8B5C41;
+            font-weight: 600;
+        }
+
+        /* Sort dropdown */
+        .sort-select {
+            padding: 10px 16px;
+            border: 1px solid #e7e5e4;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .sort-select:hover {
+            border-color: #8B5C41;
+        }
+
+        .sort-select:focus {
+            border-color: #8B5C41;
+            box-shadow: 0 0 0 3px rgba(139, 92, 65, 0.1);
+        }
+
+        /* Quick view button */
+        .quick-view-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: #8B5C41;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .product-card:hover .quick-view-btn {
+            opacity: 1;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f4f6;
+            border-radius: 50%;
+            border-top-color: #8B5C41;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 100;
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 font-inter">
+    
+    <!-- Top Bar -->
+    <div class="bg-pili-brown text-white text-center py-2 text-xs sm:text-sm px-4">
+        🇵🇭 SUPPORTING 500+ FILIPINO ARTISANS | FREE SHIPPING ON ORDERS $50+
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="sticky top-0 bg-white/98 backdrop-blur-md z-50 border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-pili-brown rounded-full flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105">
+                            <span class="text-white font-bold text-lg sm:text-xl font-lora">P</span>
+                        </div>
+                        <span class="text-xl sm:text-2xl font-lora font-semibold text-pili-brown tracking-tight">PiliLokal</span>
+                    </a>
+                </div>
+                                
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="merchants.html" class="text-stone-700 hover:text-pili-brown font-medium transition">Our Merchants</a>
+                    <a href="shop.html" class="text-pili-brown font-semibold">Shop</a>
+                    <a href="home.html#featured" class="text-stone-700 hover:text-pili-brown font-medium transition">Featured</a>
+                    <a href="home.html#story" class="text-stone-700 hover:text-pili-brown font-medium transition">Our Story</a>
+                    <a href="home.html#contact" class="text-stone-700 hover:text-pili-brown font-medium transition">Contact</a>
+                    <a href="#" class="text-stone-700 hover:text-pili-brown relative">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                    </a>
+                </div>
+                
+                <button class="lg:hidden text-stone-700" id="mobile-menu-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-2xl font-lora font-semibold text-pili-brown">Menu</span>
+                <button id="mobile-menu-close" class="text-stone-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <a href="merchants.html" class="block text-lg font-medium text-stone-900">Our Merchants</a>
+                <a href="shop.html" class="block text-lg font-medium text-pili-brown">Shop</a>
+                <a href="home.html#featured" class="block text-lg font-medium text-stone-900">Featured Products</a>
+                <a href="home.html#story" class="block text-lg font-medium text-stone-900">Our Story</a>
+                <a href="home.html#contact" class="block text-lg font-medium text-stone-900">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="bg-gradient-to-br from-amber-50 to-orange-50 py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-stone-900 mb-4 font-lora">
+                Shop <span class="text-pili-brown">Authentic</span> Filipino Products
+            </h1>
+            <p class="text-lg sm:text-xl text-stone-600 max-w-3xl mx-auto">
+                Discover handcrafted treasures from Filipino artisans and small businesses
+            </p>
+        </div>
+    </section>
+
+    <!-- Shop Content -->
+    <section class="py-8 sm:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Mobile Category Dropdown -->
+            <div class="mobile-category-dropdown mb-6">
+                <label class="block text-sm font-semibold text-stone-900 mb-2">Category</label>
+                <select id="mobile-category-select" class="sort-select w-full">
+                    <option value="all">All Products</option>
+                    <optgroup label="Main Categories">
+                        <option value="handwoven">Handwoven Textiles / Fabrics</option>
+                        <option value="home-decor">Home Décor & Handicrafts</option>
+                        <option value="heritage">Heritage / Multi-Product</option>
+                        <option value="bags">Bags & Accessories</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="clothing">Clothing & Wearables</option>
+                        <option value="art">Art & Figurines</option>
+                        <option value="candles">Candles & Home Fragrances</option>
+                        <option value="food">Food & Gourmet Products</option>
+                        <option value="liquor">Liquor / Beverages</option>
+                        <option value="stationery">Stationery & Paper Products</option>
+                        <option value="miscellaneous">Miscellaneous / Specialty Products</option>
+                        <option value="other">Other</option>
+                    </optgroup>
+                    <optgroup label="Food Subcategories">
+                        <option value="baking">Baking Ingredients</option>
+                        <option value="soap">Bar Soap</option>
+                        <option value="cacao">Cacao Drinks</option>
+                        <option value="chips">Chips</option>
+                        <option value="condiments">Condiments</option>
+                        <option value="dried-fruits">Dried Fruits</option>
+                        <option value="herbal">Herbal & Supplements</option>
+                        <option value="massage-oil">Massage Oil</option>
+                        <option value="sugars">Sugars & Sweeteners</option>
+                        <option value="tea">Tea and Infusions</option>
+                        <option value="spreads">Spreads</option>
+                        <option value="trays">Trays</option>
+                        <option value="placemats">Placemats</option>
+                        <option value="storage">Household Storage Baskets</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="flex gap-8">
+                <!-- Desktop Sidebar -->
+                <aside class="desktop-category-sidebar w-64 flex-shrink-0">
+                    <div class="bg-white rounded-xl p-6 sticky top-24">
+                        <h3 class="font-bold text-lg text-stone-900 mb-4">Categories</h3>
+                        
+                        <div class="space-y-1">
+                            <div class="category-item active" data-category="all">
+                                All Products
+                            </div>
+                            
+                            <!-- Handwoven Textiles / Fabrics -->
+                            <div class="category-item" data-category="handwoven">
+                                Handwoven Textiles / Fabrics
+                            </div>
+                            
+                            <!-- Home Décor & Handicrafts -->
+                            <div class="category-item" data-category="home-decor">
+                                Home Décor & Handicrafts
+                            </div>
+                            
+                            <!-- Heritage / Multi-Product -->
+                            <div class="category-item" data-category="heritage">
+                                Heritage / Multi-Product
+                            </div>
+                            
+                            <!-- Bags & Accessories -->
+                            <div class="category-item" data-category="bags">
+                                Bags & Accessories
+                            </div>
+                            
+                            <!-- Lifestyle -->
+                            <div class="category-item" data-category="lifestyle">
+                                Lifestyle
+                            </div>
+                            
+                            <!-- Clothing & Wearables -->
+                            <div class="category-item" data-category="clothing">
+                                Clothing & Wearables
+                            </div>
+                            
+                            <!-- Art & Figurines -->
+                            <div class="category-item" data-category="art">
+                                Art & Figurines
+                            </div>
+                            
+                            <!-- Candles & Home Fragrances -->
+                            <div class="category-item" data-category="candles">
+                                Candles & Home Fragrances
+                            </div>
+                            
+                            <!-- Food & Gourmet Products -->
+                            <div class="category-item food-category" data-category="food">
+                                Food & Gourmet Products
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div id="food-subcategories" class="subcategories-container" style="display: none;">
+                                <div class="subcategory-item" data-category="baking">Baking Ingredients</div>
+                                <div class="subcategory-item" data-category="soap">Bar Soap</div>
+                                <div class="subcategory-item" data-category="cacao">Cacao Drinks</div>
+                                <div class="subcategory-item" data-category="chips">Chips</div>
+                                <div class="subcategory-item" data-category="condiments">Condiments</div>
+                                <div class="subcategory-item" data-category="dried-fruits">Dried Fruits</div>
+                                <div class="subcategory-item" data-category="herbal">Herbal & Supplements</div>
+                                <div class="subcategory-item" data-category="massage-oil">Massage Oil</div>
+                                <div class="subcategory-item" data-category="sugars">Sugars & Sweeteners</div>
+                                <div class="subcategory-item" data-category="tea">Tea and Infusions</div>
+                                <div class="subcategory-item" data-category="spreads">Spreads</div>
+                                <div class="subcategory-item" data-category="trays">Trays</div>
+                                <div class="subcategory-item" data-category="placemats">Placemats</div>
+                                <div class="subcategory-item" data-category="storage">Household Storage Baskets</div>
+                            </div>
+                            
+                            <!-- Liquor / Beverages -->
+                            <div class="category-item" data-category="liquor">
+                                Liquor / Beverages
+                            </div>
+                            
+                            <!-- Stationery & Paper Products -->
+                            <div class="category-item" data-category="stationery">
+                                Stationery & Paper Products
+                            </div>
+                            
+                            <!-- Miscellaneous / Specialty Products -->
+                            <div class="category-item" data-category="miscellaneous">
+                                Miscellaneous / Specialty
+                            </div>
+                            
+                            <!-- Other -->
+                            <div class="category-item" data-category="other">
+                                Other
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <div class="flex-1">
+                    <!-- Filters Bar -->
+                    <div class="bg-white rounded-xl p-4 sm:p-6 mb-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <span class="text-sm font-semibold text-stone-900">Filters:</span>
+                                <div id="active-filters" class="flex gap-2 flex-wrap">
+                                    <span class="filter-badge">
+                                        All Products
+                                        <button onclick="clearAllFilters()">×</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <label class="text-sm font-semibold text-stone-900">Sort by:</label>
+                                <select class="sort-select" id="sort-select">
+                                    <option value="featured">Featured</option>
+                                    <option value="newest">Newest</option>
+                                    <option value="price-low">Price: Low to High</option>
+                                    <option value="price-high">Price: High to Low</option>
+                                    <option value="name">Name: A-Z</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Products will be dynamically inserted here -->
+                    </div>
+
+                    <!-- Load More -->
+                    <div class="text-center mt-12">
+                        <button id="load-more-btn" class="border-2 border-pili-brown text-pili-brown px-8 py-3 rounded-lg font-semibold hover:bg-pili-brown hover:text-white transition-all">
+                            Load More Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-pili-brown rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-xl font-lora">P</span>
+                        </div>
+                        <span class="text-xl font-lora font-semibold">PiliLokal</span>
+                    </div>
+                    <p class="text-sm text-stone-400">
+                        Connecting Filipino artisans with the world. Every purchase supports local communities.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 text-base">Shop</h4>
+                    <ul class="space-y-2 text-sm text-stone-400">
+                        <li><a href="#" class="hover:text-white transition">All Products</a></li>
+                        <li><a href="merchants.html" class="hover:text-white transition">Our Merchants</a></li>
+                        <li><a href="#" class="hover:text-white transition">Featured</a></li>
+                        <li><a href="#" class="hover:text-white transition">New Arrivals</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 text-base">Company</h4>
+                    <ul class="space-y-2 text-sm text-stone-400">
+                        <li><a href="home.html#story" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition">Become a Merchant</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="home.html#contact" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 text-base">Support</h4>
+                    <ul class="space-y-2 text-sm text-stone-400">
+                        <li><a href="#" class="hover:text-white transition">FAQ</a></li>
+                        <li><a href="#" class="hover:text-white transition">Shipping Info</a></li>
+                        <li><a href="#" class="hover:text-white transition">Returns</a></li>
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-stone-800 pt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-stone-400">
+                <p>&copy; 2025 PiliLokal. All rights reserved.</p>
+                <p class="mt-2 sm:mt-0">Made with ❤️ in the Philippines</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample product data - In production, this would come from your Shopify store
+        const allProducts = [
+            // Handwoven Textiles
+            { id: 1, name: "Traditional Inabel Runner", category: "handwoven", price: 45.99, image: "🧵", badge: "Artisanal", rating: 5.0 },
+            { id: 2, name: "Handwoven Table Mat Set", category: "handwoven", price: 32.99, image: "🪡", badge: "New", rating: 4.9 },
+            
+            // Home Décor
+            { id: 3, name: "Cebu Clay Pottery Vase", category: "home-decor", price: 38.99, image: "🏺", badge: "Bestseller", rating: 4.8 },
+            { id: 4, name: "Bamboo Wall Art", category: "home-decor", price: 52.99, image: "🎋", badge: "Premium", rating: 4.9 },
+            
+            // Heritage
+            { id: 5, name: "Heritage Gift Box Set", category: "heritage", price: 78.99, image: "🎁", badge: "Premium", rating: 5.0 },
+            { id: 6, name: "Cultural Showcase Collection", category: "heritage", price: 95.99, image: "🏛️", badge: "Limited", rating: 5.0 },
+            
+            // Bags & Accessories
+            { id: 7, name: "Handwoven Storage Basket", category: "bags", price: 32.99, image: "🧺", badge: "Artisanal", rating: 4.9 },
+            { id: 8, name: "Native Shoulder Bag", category: "bags", price: 42.99, image: "👜", badge: "New", rating: 4.8 },
+            
+            // Lifestyle
+            { id: 9, name: "Coconut Shell Bowl Set", category: "lifestyle", price: 28.99, image: "🥥", badge: "Eco-Friendly", rating: 4.7 },
+            { id: 10, name: "Rattan Home Organizer", category: "lifestyle", price: 36.99, image: "🗂️", badge: "Popular", rating: 4.8 },
+            
+            // Clothing
+            { id: 11, name: "Barong Tagalog Shirt", category: "clothing", price: 65.99, image: "👔", badge: "Traditional", rating: 4.9 },
+            { id: 12, name: "Filipiniana Dress", category: "clothing", price: 88.99, image: "👗", badge: "Premium", rating: 5.0 },
+            
+            // Art & Figurines
+            { id: 13, name: "Wooden Santos Figure", category: "art", price: 72.99, image: "🗿", badge: "Handcarved", rating: 5.0 },
+            { id: 14, name: "Modern Filipino Art Print", category: "art", price: 45.99, image: "🖼️", badge: "New", rating: 4.8 },
+            
+            // Candles & Fragrances
+            { id: 15, name: "Sampaguita Scented Candle", category: "candles", price: 24.99, image: "🕯️", badge: "Bestseller", rating: 4.9 },
+            { id: 16, name: "Ylang-Ylang Room Spray", category: "candles", price: 18.99, image: "💐", badge: "New", rating: 4.7 },
+            
+            // Food - Baking
+            { id: 17, name: "Ube Extract Powder", category: "baking", price: 15.99, image: "🟣", badge: "Popular", rating: 4.8 },
+            { id: 18, name: "Pandan Flavoring", category: "baking", price: 12.99, image: "🌿", badge: "Organic", rating: 4.9 },
+            
+            // Food - Bar Soap
+            { id: 19, name: "Calamansi Soap Bar Set", category: "soap", price: 12.50, image: "🧼", badge: "New", rating: 4.8 },
+            { id: 20, name: "Papaya Whitening Soap", category: "soap", price: 14.99, image: "🫧", badge: "Bestseller", rating: 4.9 },
+            
+            // Food - Cacao
+            { id: 21, name: "Davao Dark Chocolate Bar", category: "cacao", price: 24.99, image: "🍫", badge: "Premium", rating: 4.9 },
+            { id: 22, name: "Tablea Cacao Balls", category: "cacao", price: 18.99, image: "⚫", badge: "Traditional", rating: 5.0 },
+            
+            // Food - Chips
+            { id: 23, name: "Banana Chips Original", category: "chips", price: 8.99, image: "🍌", badge: "Bestseller", rating: 4.7 },
+            { id: 24, name: "Taro Chips", category: "chips", price: 9.99, image: "🟤", badge: "Popular", rating: 4.8 },
+            
+            // Food - Condiments
+            { id: 25, name: "Organic Coco Aminos", category: "condiments", price: 16.99, image: "🥥", badge: "Organic", rating: 4.9 },
+            { id: 26, name: "Banana Ketchup", category: "condiments", price: 7.99, image: "🍌", badge: "Classic", rating: 4.6 },
+            
+            // Food - Dried Fruits
+            { id: 27, name: "Dried Mango Slices", category: "dried-fruits", price: 12.99, image: "🥭", badge: "Bestseller", rating: 5.0 },
+            { id: 28, name: "Dried Papaya Chunks", category: "dried-fruits", price: 11.99, image: "🟠", badge: "Popular", rating: 4.8 },
+            
+            // Food - Herbal
+            { id: 29, name: "Moringa Powder", category: "herbal", price: 22.99, image: "🌿", badge: "Superfood", rating: 4.9 },
+            { id: 30, name: "Guyabano Tea Leaves", category: "herbal", price: 18.99, image: "🍃", badge: "Wellness", rating: 4.7 },
+            
+            // Food - Massage Oil
+            { id: 31, name: "Virgin Coconut Oil", category: "massage-oil", price: 19.99, image: "🥥", badge: "Pure", rating: 4.9 },
+            { id: 32, name: "Hilot Massage Oil", category: "massage-oil", price: 24.99, image: "💆", badge: "Traditional", rating: 5.0 },
+            
+            // Food - Sugars & Sweeteners
+            { id: 33, name: "Muscovado Sugar", category: "sugars", price: 8.99, image: "🟤", badge: "Organic", rating: 4.8 },
+            { id: 34, name: "Coconut Sugar", category: "sugars", price: 10.99, image: "🥥", badge: "Healthy", rating: 4.9 },
+            
+            // Food - Tea
+            { id: 35, name: "Salabat Ginger Tea", category: "tea", price: 13.99, image: "🫖", badge: "Warming", rating: 4.8 },
+            { id: 36, name: "Pandan Tea Bags", category: "tea", price: 12.99, image: "🌿", badge: "Calming", rating: 4.7 },
+            
+            // Food - Spreads
+            { id: 37, name: "Pure Laguna Honey", category: "spreads", price: 18.99, image: "🍯", badge: "Bestseller", rating: 5.0 },
+            { id: 38, name: "Coco Jam", category: "spreads", price: 9.99, image: "🥥", badge: "Sweet", rating: 4.8 },
+            
+            // Food - Trays
+            { id: 39, name: "Bamboo Serving Tray", category: "trays", price: 35.99, image: "🎋", badge: "Eco", rating: 4.9 },
+            { id: 40, name: "Rattan Food Tray", category: "trays", price: 28.99, image: "🧺", badge: "Handmade", rating: 4.7 },
+            
+            // Food - Placemats
+            { id: 41, name: "Woven Placemat Set", category: "placemats", price: 24.99, image: "🪡", badge: "Set of 4", rating: 4.8 },
+            { id: 42, name: "Abaca Table Runner", category: "placemats", price: 32.99, image: "🧵", badge: "Premium", rating: 4.9 },
+            
+            // Food - Storage
+            { id: 43, name: "Native Storage Basket Large", category: "storage", price: 42.99, image: "🧺", badge: "Practical", rating: 4.9 },
+            { id: 44, name: "Woven Hamper", category: "storage", price: 55.99, image: "🗑️", badge: "Spacious", rating: 4.8 },
+            
+            // Liquor
+            { id: 45, name: "Lambanog Premium", category: "liquor", price: 32.99, image: "🍶", badge: "Traditional", rating: 4.7 },
+            { id: 46, name: "Coconut Wine", category: "liquor", price: 28.99, image: "🥥", badge: "Unique", rating: 4.6 },
+            
+            // Stationery
+            { id: 47, name: "Handmade Paper Journal", category: "stationery", price: 19.99, image: "📓", badge: "Artisan", rating: 4.8 },
+            { id: 48, name: "Recycled Paper Notebook Set", category: "stationery", price: 15.99, image: "📔", badge: "Eco", rating: 4.7 },
+            
+            // Miscellaneous
+            { id: 49, name: "Natural Loofah Scrubber", category: "miscellaneous", price: 6.99, image: "🧽", badge: "Eco", rating: 4.6 },
+            { id: 50, name: "Coco Coir Doormat", category: "miscellaneous", price: 22.99, image: "🚪", badge: "Durable", rating: 4.8 },
+            
+            // Other
+            { id: 51, name: "Custom Gift Box", category: "other", price: 45.99, image: "🎁", badge: "Customizable", rating: 4.9 },
+            { id: 52, name: "Souvenir Item Set", category: "other", price: 35.99, image: "🎀", badge: "Gift Set", rating: 4.7 },
+        ];
+
+        let currentCategory = 'all';
+        let displayedProducts = 12;
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Food category expansion
+        const foodCategory = document.querySelector('.food-category');
+        const foodSubcategories = document.getElementById('food-subcategories');
+        
+        foodCategory.addEventListener('click', function(e) {
+            // Don't expand if we're filtering to food category
+            if (this.classList.contains('active') && currentCategory === 'food') {
+                return;
+            }
+            
+            // Toggle expansion
+            this.classList.toggle('expanded');
+            if (this.classList.contains('expanded')) {
+                foodSubcategories.style.display = 'block';
+            } else {
+                foodSubcategories.style.display = 'none';
+            }
+        });
+
+        // Category filtering
+        function filterByCategory(category) {
+            currentCategory = category;
+            displayedProducts = 12;
+            
+            // Update active category in sidebar
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.subcategory-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeItem = document.querySelector(`[data-category="${category}"]`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+            
+            // Update filter badge
+            const categoryNames = {
+                'all': 'All Products',
+                'handwoven': 'Handwoven Textiles',
+                'home-decor': 'Home Décor',
+                'heritage': 'Heritage',
+                'bags': 'Bags & Accessories',
+                'lifestyle': 'Lifestyle',
+                'clothing': 'Clothing',
+                'art': 'Art & Figurines',
+                'candles': 'Candles & Fragrances',
+                'food': 'Food & Gourmet',
+                'liquor': 'Liquor',
+                'stationery': 'Stationery',
+                'miscellaneous': 'Miscellaneous',
+                'other': 'Other',
+                'baking': 'Baking Ingredients',
+                'soap': 'Bar Soap',
+                'cacao': 'Cacao Drinks',
+                'chips': 'Chips',
+                'condiments': 'Condiments',
+                'dried-fruits': 'Dried Fruits',
+                'herbal': 'Herbal & Supplements',
+                'massage-oil': 'Massage Oil',
+                'sugars': 'Sugars & Sweeteners',
+                'tea': 'Tea and Infusions',
+                'spreads': 'Spreads',
+                'trays': 'Trays',
+                'placemats': 'Placemats',
+                'storage': 'Storage Baskets'
+            };
+            
+            document.getElementById('active-filters').innerHTML = `
+                <span class="filter-badge">
+                    ${categoryNames[category]}
+                    <button onclick="clearAllFilters()">×</button>
+                </span>
+            `;
+            
+            renderProducts();
+        }
+
+        function clearAllFilters() {
+            filterByCategory('all');
+        }
+
+        // Render products
+        function renderProducts() {
+            const productsGrid = document.getElementById('products-grid');
+            let filteredProducts = currentCategory === 'all' 
+                ? allProducts 
+                : allProducts.filter(p => p.category === currentCategory);
+            
+            const productsToShow = filteredProducts.slice(0, displayedProducts);
+            
+            productsGrid.innerHTML = productsToShow.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <div style="font-size: 5rem; position: relative; z-index: 1;">${product.image}</div>
+                        <button class="quick-view-btn">Quick View</button>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-stone-900 flex-1">${product.name}</h3>
+                            ${product.badge ? `<span class="bg-amber-100 text-amber-800 text-xs font-semibold px-2 py-1 rounded whitespace-nowrap ml-2">${product.badge}</span>` : ''}
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <span class="text-yellow-500 text-sm">★</span>
+                            <span class="text-sm text-stone-600 ml-1">${product.rating}</span>
+                        </div>
+                        <div class="mt-auto">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-pili-brown">$${product.price}</span>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Show/hide load more button
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            if (displayedProducts >= filteredProducts.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'inline-block';
+            }
+        }
+
+        // Load more products
+        document.getElementById('load-more-btn').addEventListener('click', () => {
+            displayedProducts += 12;
+            renderProducts();
+        });
+
+        // Add to cart
+        function addToCart(productId) {
+            const button = event.target;
+            button.textContent = 'Added!';
+            button.style.background = '#22c55e';
+            setTimeout(() => {
+                button.textContent = 'Add to Cart';
+                button.style.background = '#8B5C41';
+            }, 2000);
+        }
+
+        // Category click handlers
+        document.querySelectorAll('.category-item, .subcategory-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                filterByCategory(category);
+            });
+        });
+
+        // Mobile category select
+        document.getElementById('mobile-category-select').addEventListener('change', function() {
+            filterByCategory(this.value);
+        });
+
+        // Sort functionality
+        document.getElementById('sort-select').addEventListener('change', function() {
+            const sortValue = this.value;
+            let filteredProducts = currentCategory === 'all' 
+                ? [...allProducts] 
+                : allProducts.filter(p => p.category === currentCategory);
+            
+            switch(sortValue) {
+                case 'newest':
+                    filteredProducts.reverse();
+                    break;
+                case 'price-low':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+            }
+            
+            allProducts.length = 0;
+            allProducts.push(...filteredProducts);
+            renderProducts();
+        });
+
+        // Initialize
+        renderProducts();
+    </script>
+</body>
+</html>
